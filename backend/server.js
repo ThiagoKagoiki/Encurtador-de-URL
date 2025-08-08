@@ -20,6 +20,17 @@ app.use(express.json())
 
 app.post('/url', postarUrl)
 
+app.get('/:codigo', async(req, res) => {
+  const { codigo } = req.params;
+  const urlRegistro = await db.Url.findOne({ where: { codigo } });
+
+  if (!urlRegistro) {
+    return res.status(404).send('Código não encontrado');
+  }
+
+  return res.redirect(urlRegistro.url_encurtada);
+})
+
 db.sequelize.sync()
   .then(() => {
     app.listen(PORT, () => console.log(`Servidor da clínica rodando na porta ${PORT}`));
