@@ -6,10 +6,14 @@ export const postarUrl = async (req, res) => {
     try {
         const { codigo, url_encurtada } = req.body
 
+
+        //Verificando se o código postado está dentro destes caracteres
         const regexCodigo = /^[a-zA-Z0-9-_]+$/
         if (!regexCodigo.test(codigo)) {
             return res.status(400).json({ mensagem: "Código inválido. Use letras, números, - ou _" });
         }
+
+        //Verificando se o link é válido
 
         try {
             new URL(url_encurtada);
@@ -18,6 +22,8 @@ export const postarUrl = async (req, res) => {
         }
 
         const existente = await db.Url.findOne({where: {codigo}})
+
+        //Verificando se o código já está em uso
 
         if(existente){
             return res.status(400).json({mensagem: "Código já está em uso"})

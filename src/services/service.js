@@ -9,3 +9,4 @@ const API = axios.create({
 });
 
 export const enviarUrl = (dados) => API.post('/url', dados)
+export const pegarUrl = () => API.get(`/${codigo}`)

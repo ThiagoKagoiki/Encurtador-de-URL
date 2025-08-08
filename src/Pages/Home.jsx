@@ -5,6 +5,7 @@ export const Home = () => {
 
     const [codigo, setCodigo] = useState('')
     const [url_encurtada, setUrl] = useState('')
+    const [shortLink, setShortLink] = useState('')
 
     const handleSubmit = async(e) => {
         e.preventDefault()
@@ -19,6 +20,7 @@ export const Home = () => {
             const resposta = await enviarUrl(dados);
             setCodigo('')
             setUrl('')
+            setShortLink(resposta.data.shortUrl);
         } catch (error) {
             console.error("Erro ao enviar url:", error.response ? error.response.data : error.message);
             alert("Erro ao enviar url. Verifique os dados e tente novamente.");
@@ -32,7 +34,11 @@ export const Home = () => {
                 <input type="text" placeholder="URL" className="inputs" value={url_encurtada} onChange={e => setUrl(e.target.value)}/>
                 <button className="button">Encurtar</button>
             </form>
-            <span></span>
+            {shortLink && (
+                <p>
+                    Link encurtado: <span><a href={shortLink}>{shortLink}</a></span>
+                </p>
+            )}
         </div>
     )
 }
