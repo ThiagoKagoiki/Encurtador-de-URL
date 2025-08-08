@@ -21,18 +21,24 @@ app.use(express.json())
 
 app.post('/url', postarUrl)
 
-app.get('/:codigo', async(req, res) => {
-  const { codigo } = req.params;
-  const urlRegistro = await db.Url.findOne({ where: { codigo } });
-
-  if (!urlRegistro) {
-    return res.status(404).send('Código não encontrado');
-  }
-
-  return res.redirect(urlRegistro.url_encurtada);
-})
-
 app.get('/shortLinks', verShortsLinks)
+
+app.get('/:codigo', async (req, res) => {
+  const { codigo } = req.params;
+  try {
+    const registro = await db.Url.findOne({ where: { codigo } });
+
+    if (!registro) {
+      return res.status(404).send('Link não encontrado');
+    }
+
+    return res.redirect(registro.urlOriginal);
+  } catch (error) {
+    return res.status(500).send('Erro no servidor');
+  }
+});
+
+// app.get('/consultas', verConsulta)
 
 db.sequelize.sync()
   .then(() => {

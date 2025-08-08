@@ -4,7 +4,7 @@ import { where } from "sequelize";
 
 export const postarUrl = async (req, res) => {
     try {
-        const { codigo, url_encurtada } = req.body
+        const { codigo, urlOriginal } = req.body
 
 
         //Verificando se o código postado está dentro destes caracteres
@@ -16,7 +16,7 @@ export const postarUrl = async (req, res) => {
         //Verificando se o link é válido
 
         try {
-            new URL(url_encurtada);
+            new URL(urlOriginal);
         } catch {
             return res.status(400).json({ mensagem: "URL inválida." });
         }
@@ -29,12 +29,14 @@ export const postarUrl = async (req, res) => {
             return res.status(400).json({mensagem: "Código já está em uso"})
         }
 
-        const novoUrl = await db.Url.create({ codigo, url_encurtada })
+        const shortLink = `http://localhost:3000/${codigo}`
+
+        const novoUrl = await db.Url.create({ codigo, urlOriginal, shortLink })
 
         res.status(201).json({
             mensagem: "Url enviada com sucesso",
             Url: novoUrl,
-            shortUrl: `http://localhost:3000/${codigo}`
+            shortUrl: shortLink
         })
     } catch (err) {
         res.status(500).json({
@@ -57,3 +59,17 @@ export const verShortsLinks = async(req, res) => {
         })
     }
 }
+
+// export const verConsulta = async (req, res) => {
+//   try {
+
+//     const consultas = await db.Consulta.findAll();
+
+//     res.json(consultas)
+//   } catch (err) {
+//     res.status(500).json({
+//       erro: 'Erro ao ver Consulta',
+//       detalhes: err.message
+//     });
+//   }
+// }

@@ -11,9 +11,13 @@ export default (sequelize) => {
       type: DataTypes.STRING,
       unique: true
     },
-    url_encurtada: {
+    urlOriginal: {
         type: DataTypes.STRING,
         allowNull: false
+    },
+    shortLink: {
+      type: DataTypes.STRING,
+      unique: true
     }
   });
 

@@ -9,4 +9,6 @@ const API = axios.create({
 });
 
 export const enviarUrl = (dados) => API.post('/url', dados)
-export const pegarUrl = () => API.get(`/${codigo}`)
+export const pegarUrl = () => API.get(`/shortLinks`)
+
+// export const verConsulta = () => API.get('/consultas')

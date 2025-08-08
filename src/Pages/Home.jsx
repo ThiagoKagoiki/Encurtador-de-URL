@@ -4,22 +4,22 @@ import { enviarUrl } from "../services/service";
 export const Home = () => {
 
     const [codigo, setCodigo] = useState('')
-    const [url_encurtada, setUrl] = useState('')
+    const [urlOriginal, setUrlOriginal] = useState('')
     const [shortLink, setShortLink] = useState('')
 
     const handleSubmit = async(e) => {
         e.preventDefault()
-        if(!codigo || !url_encurtada){
+        if(!codigo || !urlOriginal){
             alert("Por favor, preencha todos os campos!")
             return
         }
 
-        const dados = {codigo, url_encurtada}
+        const dados = {codigo, urlOriginal}
 
         try {
             const resposta = await enviarUrl(dados);
             setCodigo('')
-            setUrl('')
+            setUrlOriginal('')
             setShortLink(resposta.data.shortUrl);
         } catch (error) {
             console.error("Erro ao enviar url:", error.response ? error.response.data : error.message);
@@ -31,7 +31,7 @@ export const Home = () => {
         <div>
             <form onSubmit={handleSubmit} className="forms">
                 <input type="text" placeholder="Código desejado" className="inputs" value={codigo} onChange={e => setCodigo(e.target.value)}/>
-                <input type="text" placeholder="URL" className="inputs" value={url_encurtada} onChange={e => setUrl(e.target.value)}/>
+                <input type="text" placeholder="URL" className="inputs" value={urlOriginal} onChange={e => setUrlOriginal(e.target.value)}/>
                 <button className="button">Encurtar</button>
             </form>
             {shortLink && (
