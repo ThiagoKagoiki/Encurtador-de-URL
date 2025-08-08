@@ -43,3 +43,17 @@ export const postarUrl = async (req, res) => {
         })
     }
 }
+
+export const verShortsLinks = async(req, res) => {
+    try{
+
+        const shortsLinks = await db.Url.findAll()
+
+        res.json(shortsLinks)
+    }catch(err){
+        res.status(500).json({
+            erro: "Erro ao ver seus links",
+            detalhes: err.message
+        })
+    }
+}

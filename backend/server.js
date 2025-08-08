@@ -1,7 +1,7 @@
 import express from 'express'
 import dotenv from 'dotenv';
 import db from './models/index.js'
-import { postarUrl } from './controllers/authController.js';
+import { postarUrl, verShortsLinks } from './controllers/authController.js';
 import cors from 'cors';
 
 dotenv.config();
@@ -31,6 +31,8 @@ app.get('/:codigo', async(req, res) => {
 
   return res.redirect(urlRegistro.url_encurtada);
 })
+
+app.get('/shortLinks', verShortsLinks)
 
 db.sequelize.sync()
   .then(() => {
